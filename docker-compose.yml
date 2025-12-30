@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   backend:
     build: ./v1_backend
@@ -9,11 +10,7 @@ services:
 
   frontend:
     build: ./v1_frontend
-    depends_on:
-      - backend
-    # We no longer expose frontend port directly, NGINX will handle it
-    volumes:
-      - ./v1_frontend/build:/usr/share/nginx/html
+    command: ["true"]   # build-only container
 
   nginx:
     image: nginx:alpine
