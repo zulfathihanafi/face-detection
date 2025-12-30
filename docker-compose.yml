@@ -9,7 +9,19 @@ services:
 
   frontend:
     build: ./v1_frontend
-    ports:
-      - "3000:80"
     depends_on:
       - backend
+    # We no longer expose frontend port directly, NGINX will handle it
+    volumes:
+      - ./v1_frontend/build:/usr/share/nginx/html
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./v1_frontend/build:/usr/share/nginx/html:ro
